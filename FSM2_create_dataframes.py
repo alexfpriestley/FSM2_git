@@ -40,13 +40,13 @@ filename2 = 'safran_CdP_1819_smp' #input('Enter the FSM2 smp filename: ')
 snd = np.loadtxt('/home/s0814684/FSM/FSM2-master/'+str(filename2)+'',usecols=[4]) # snow depth
 swe = np.loadtxt('/home/s0814684/FSM/FSM2-master/'+str(filename2)+'',usecols=[5]) # snow water equivalent
 
-snd = pd.DataFrame() # create dataframes 
-snd['snd']=snd
-snd.index=index
+DSN = pd.DataFrame() # create dataframes 
+DSN['snd']=snd
+DSN.index=index
 
-swe = pd.DataFrame()
-swe['swe']=swe
-swe.index=index
+WSN = pd.DataFrame()
+WSN['swe']=swe
+WSN.index=index
 
 
 
@@ -167,8 +167,8 @@ rgr_mm.to_csv('/home/s0814684/FSM/snowtools/fsm_data/rgr_mm.csv',sep=',') # csv 
 lyr_dens.to_csv('/home/s0814684/FSM/snowtools/fsm_data/SNOWRO.csv',sep=',') # csv of layer snow density
 
 
-snd.to_csv('/home/s0814684/FSM/snowtools/fsm_data/DSN.csv',sep=',') # snow depth
-swe.to_csv('/home/s0814684/FSM/snowtools/fsm_data/WSN.csv',sep=',') # snow water equivalent
+DSN.to_csv('/home/s0814684/FSM/snowtools/fsm_data/DSN.csv',sep=',') # snow depth
+WSN.to_csv('/home/s0814684/FSM/snowtools/fsm_data/WSN.csv',sep=',') # snow water equivalent
 
 
 
