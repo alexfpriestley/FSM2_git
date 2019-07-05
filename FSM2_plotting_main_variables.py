@@ -25,6 +25,12 @@ DSN = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/DSN.csv", index_col = 0
 SNOWDZ = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/SNOWDZ.csv", index_col = 0,
                        low_memory=False)
 
+layer_height = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/layer_height.csv", index_col = 0,
+                       low_memory=False)
+
+rgr_mm = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/rgr_mm.csv", index_col = 0,
+                       low_memory=False)
+
 
 
 
@@ -52,7 +58,7 @@ snow.index=index
 '''
 plot swe and snd on one chart
 '''
-
+plt.figure(figsize=(9,6))
 ax1 = snow['WSN'].plot(label='Snow Water Equivalent (kg/m3)',color='b')
 ax1.set_ylabel('SWE')
 lines, labels = ax1.get_legend_handles_labels()
@@ -66,12 +72,36 @@ lines += line
 labels += label
 
 ax1.legend(lines,labels,loc=0)
+plt.show()
 
 '''
 plot layer variables on scatter plots, colouring by density or grain size
+
+!!! set vmin and vmax to be sensible for your model output !!!
 '''
 
+plt.figure(figsize=(9,6))
 
+for n in range(SNOWRO.shape[1]):
+    plt.scatter(index, layer_height.iloc[:,n], c=SNOWRO.iloc[:,n],vmin=100,vmax=500,cmap='winter')
+    
+    
+plt.colorbar().set_label('Snow Density (kg/m^2)')  
+plt.ylabel('Snow depth (m)')
+axes = plt.gca()
+axes.set_ylim([0,None])
+plt.gcf().autofmt_xdate()  
+plt.show()
+
+
+
+plt.figure(figsize=(9,6))
+for n in range(SNOWRO.shape[1]):
+    plt.scatter(index, layer_height.iloc[:,n], c=rgr_mm.iloc[:,n],vmin=0,vmax=2,cmap='gnuplot2')
+plt.colorbar().set_label('Snow grainsize (mm)')  
+plt.ylabel('Snow depth (m)')
+plt.gcf().autofmt_xdate()  
+plt.show()
 
 
 
