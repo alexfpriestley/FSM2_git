@@ -24,17 +24,26 @@ from netCDF4 import date2num
 snowro = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/SNOWRO.csv",
                        index_col = 0,low_memory=False)
 
+'''
+snowtools needs missing values to be set as 9.97e+36 for some reason to work...
+'''
+                      
+snowro.fillna(997.e+34,inplace=True)
+
 wsn = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/WSN.csv", index_col = 0,
                        low_memory=False)
+wsn.fillna(997.e+34,inplace=True)
 
 dsn = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/DSN.csv", index_col = 0,
                        low_memory=False)
+dsn.fillna(997.e+34,inplace=True)
 
 snowdz = pd.read_csv("/home/s0814684/FSM/snowtools/fsm_data/SNOWDZ.csv", index_col = 0,
                        low_memory=False)
+snowdz.fillna(997.e+34,inplace=True)
 
 # create netcdf file
-dataset = Dataset('fsm_data/snow1819.nc','w', format='NETCDF4_CLASSIC')
+dataset = Dataset('/home/s0814684/FSM/snowtools/fsm_data/snow1819.nc','w', format='NETCDF4_CLASSIC')
 
 #create dimensions of netcdf file (to match CEN format)
 
@@ -56,26 +65,26 @@ time.calendar = 'standard'
 time.axis='T'
 
 # create data variables
-SNOWRO = dataset.createVariable('SNOWRO',np.float64,('time','snow_layer','Number_of_points'),
-                                fill_value=1.e+20)
+SNOWRO = dataset.createVariable('SNOWRO',np.float64,('time','snow_layer','Number_of_points'))#,
+                                #fill_value=997.e+34)
 SNOWRO.long_name='Snow_density'
 SNOWRO.units='Kg/m3'
 SNOWRO.missing_value=1.e+20
 
-SNOWDZ = dataset.createVariable('SNOWDZ',np.float64,('time','snow_layer','Number_of_points'),
-                                fill_value=1.e+20)
+SNOWDZ = dataset.createVariable('SNOWDZ',np.float64,('time','snow_layer','Number_of_points'))#,
+                                #fill_value=997.e+34)
 SNOWDZ.long_name = 'Snow layer thickness'
 SNOWDZ.units='m'
 SNOWDZ.missing_value=1.e+20
 
-DSN_T_ISBA = dataset.createVariable('DSN_T_ISBA',np.float64,('time','Number_of_Tile','Number_of_points'),
-                                    fill_value=1.e+20)
+DSN_T_ISBA = dataset.createVariable('DSN_T_ISBA',np.float64,('time','Number_of_Tile','Number_of_points'))#,
+                                    #fill_value=997.e+34)
 DSN_T_ISBA.long_name='total_snow_depth'
 DSN_T_ISBA.units='m'
 DSN_T_ISBA.missing_value=1.e+20
 
-WSN_T_ISBA = dataset.createVariable('WSN_T_ISBA',np.float64,('time','Number_of_Tile','Number_of_points'),
-                                    fill_value=1.e+20)
+WSN_T_ISBA = dataset.createVariable('WSN_T_ISBA',np.float64,('time','Number_of_Tile','Number_of_points'))#,
+                                    #fill_value=997.e+34)
 WSN_T_ISBA.long_name='total_snow_reservoir'
 WSN_T_ISBA.units='kg/m2'
 WSN_T_ISBA.missing_value=1.e+20
